@@ -124,3 +124,56 @@ body {
 .blackout--enabled {
     display: block;
 }
+
+.placemark--daH26 {
+    align-items: center;
+    background-color: #656afc;
+    border-radius: 50%;
+    bottom: 55px;
+    display: flex;
+    flex-direction: column;
+    height: 64px;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    width: 64px;
+
+}
+
+.placemark--daH26:after {
+    border-radius: 2px;
+    position: relative;
+    bottom: -28px;
+    content: "";
+    height: 34px;
+    opacity: 1;
+    width: 4px;
+    background-color: #656afc;
+}
+
+.label-container--aBo8C {
+
+}
+
+.label-container--aBo8C:after {
+    position: relative;
+    top: 100%;
+    background-color: white;
+    border-radius: 50%;
+    content: "";
+    display: block;
+    height: 18px;
+    width: 18px;
+}
+.marker-wrapper{
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+
+}
