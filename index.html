@@ -82,7 +82,7 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+                marker.position = pos;
                 // marker = new google.maps.Marker({
                 //     map: map,
                 //     position: pos,
@@ -90,29 +90,26 @@
                 // });
 
                 // Добавляем слушатель событий для перемещения маркера с картой.
-                // google.maps.event.addListener(map, 'center_changed', function () {
-                //     window.setTimeout(function () {
-                //         let center = map.getCenter();
-                //         marker.setPosition(center);
-                //     }, 0);
-                // });
+                google.maps.event.addListener(map, 'center_changed', function () {
+                    let center = map.getCenter();
+                    marker.position = center;
+                });
 
                 map.setCenter(pos);
 
                 // Добавляем слушатель событий после окончания перемещения маркера для получения адреса
-                // google.maps.event.addListener(map, 'dragend', function () {
-                //     geocodePosition(marker.getPosition());
-                // });
+                google.maps.event.addListener(map, 'dragend', function () {
+                    geocodePosition(marker.position);
+                });
 
                 // Получаем адрес начальной позиции
                 geocodePosition(pos);
 
             }, function () {
-                // handleNoGeolocation(true);
+                marker.position = google.maps.LatLng(25.276987, 55.296249);
             });
         } else {
-            // Browser doesn't support Geolocation
-            // handleNoGeolocation(false);
+            marker.position = google.maps.LatLng(25.276987, 55.296249);
         }
 
 
