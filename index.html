@@ -1,41 +1,152 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Geolocation with Reverse Geocoding</title>
+  <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
-    <title>Google Maps Places Search with Autocomplete in Dubai</title>
+  <style>
 
+  </style>
+    <script>
+        var map;
+        var marker;
+        var geocoder;
+        var autocomplete;
+        var infowindow;
+        var markers = [];
+
+        function initialize() {
+            var dubai = new google.maps.LatLng(25.276987, 55.296249);
+            var mapOptions = {
+                center: dubai,
+                zoom: 13,
+                disableDefaultUI: true,
+            };
+            infowindow = new google.maps.InfoWindow();
+            geocoder = new google.maps.Geocoder();
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('addressInput'),
+                {
+                    types: [], // Позволяет любой тип мест
+                    componentRestrictions: {country: 'AE'}
+                }
+            );
+            autocomplete.bindTo('bounds', map);
+
+
+            autocomplete.addListener('place_changed', function() {
+                infowindow.close();
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    window.alert("Место не найдено: '" + place.name + "'");
+                    return;
+                }
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+
+            });
+        }
+
+
+
+        // Try HTML5 geolocation
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: pos,
+                    title: 'Drag me!'
+                });
+
+                // Добавляем слушатель событий для перемещения маркера с картой.
+                google.maps.event.addListener(map, 'center_changed', function() {
+                    window.setTimeout(function() {
+                        var center = map.getCenter();
+                        marker.setPosition(center);
+                    }, 0);
+                });
+
+                map.setCenter(pos);
+
+                // Добавляем слушатель событий после окончания перемещения маркера для получения адреса
+                google.maps.event.addListener(map, 'dragend', function() {
+                    geocodePosition(marker.getPosition());
+                });
+
+                // Получаем адрес начальной позиции
+                geocodePosition(pos);
+
+            }, function() {
+                handleNoGeolocation(true);
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleNoGeolocation(false);
+        }
+
+
+        function geocodePosition(pos) {
+            geocoder.geocode({
+                latLng: pos
+            }, function(responses) {
+                if (responses && responses.length > 0) {
+                    document.getElementById('addressInput').value = responses[0].formatted_address;
+                } else {
+                    document.getElementById('addressInput').value = 'Cannot determine address at this location.';
+                }
+            });
+        }
+
+
+        function handleNoGeolocation(errorFlag) {
+            if (errorFlag) {
+                var content = 'Error: The Geolocation service failed.';
+            } else {
+                var content = 'Error: Your browser doesn\'t support geolocation.';
+            }
+
+            var options = {
+                map: map,
+                position: new google.maps.LatLng(60, 105),
+                content: content
+            };
+
+            map.setCenter(options.position);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
 </head>
 <body>
-<section class="google-maps">
-    <div class="google-maps__search">
+    <div id="google-maps">
+      <div class="google-maps__search">
         <div class="google-maps__search-inner">
-            <input id="autocomplete" class="google-maps__search-input"
-                   placeholder="Поиск улиц, районов и других мест в Дубае"
-                   type="text"/>
-            <div class="google-maps__button">
-
-                <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1"
-                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     viewBox="0 0 490.4 490.4" xml:space="preserve">
+          <input id="addressInput"  class="google-maps__search-input" type="text" placeholder="Address will be shown here"  />
+          <div class="google-maps__button">
+            <svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1"
+                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                 viewBox="0 0 490.4 490.4" xml:space="preserve">
 <g>
 	<path d="M484.1,454.796l-110.5-110.6c29.8-36.3,47.6-82.8,47.6-133.4c0-116.3-94.3-210.6-210.6-210.6S0,94.496,0,210.796
 		s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
 		 M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z"/>
 </g>
 </svg>
-            </div>
-
+          </div>
         </div>
-    </div>
-    <div id="map" class="google-maps__map"></div>
-</section>
-<script defer src="script.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbxRYrt3BHfbm79UDudSK-k4eayEiUK8&libraries=places&callback=initMap"
-        async defer></script>
-
+      </div>
+      </div>
+  <div id="map-canvas"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbxRYrt3BHfbm79UDudSK-k4eayEiUK8&libraries=places&callback=initialize" async defer></script>
 </body>
 </html>

@@ -14,6 +14,23 @@ body, html {
     height: 100%;
 }
 
+.pac-container {
+    display: block !important;
+    border-radius: 0 0 10px 10px;
+}
+.pac-container::after{
+    background-image: none !important;
+    display: none !important;
+}
+.pac-item {
+    padding: 10px;
+    overflow: hidden;
+    font-size: 16px;
+
+}
+.pac-item-query {
+    font-size: 13px;
+}
 .google-maps__search {
     max-width: 1010px;
     width: 100%;
@@ -22,6 +39,10 @@ body, html {
     padding: 10px 10px;
     z-index: 1;
 
+}
+
+.pac-icon {
+    display: none;
 }
 
 .google-maps__search-inner {
@@ -63,7 +84,7 @@ body, html {
     fill: #fff;
 }
 
-.google-maps__map {
+#map-canvas {
     position: absolute;
     left: 0;
     top: 0;
