@@ -24,25 +24,29 @@
             let mapOptions = {
                 center: dubai,
                 zoom: 13,
+                mapId: 'DEMO_MAP_ID',
                 disableDefaultUI: true,
             };
 
             infowindow = new google.maps.InfoWindow();
             geocoder = new google.maps.Geocoder();
             map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-            marker = new google.maps.Marker({
+            marker = new google.maps.marker.AdvancedMarkerView({
                 map: map,
                 position: dubai,
                 title: 'Drag me!'
             });
+
+
             google.maps.event.addListener(map, 'center_changed', function () {
+
                 window.setTimeout(function () {
                     let center = map.getCenter();
-                    marker.setPosition(center);
+                    marker.position = center;
                 }, 0);
             });
             google.maps.event.addListener(map, 'dragend', function () {
-                geocodePosition(marker.getPosition());
+                geocodePosition(marker.position);
             });
             geocodePosition(dubai);
             autocomplete = new google.maps.places.Autocomplete(
@@ -53,7 +57,6 @@
                 }
             );
             autocomplete.bindTo('bounds', map);
-            console.log(autocomplete);
 
             autocomplete.addListener('place_changed', function () {
                 blackout.classList.remove('blackout--enabled')
@@ -168,7 +171,7 @@
 </div>
 <div id="map-canvas"></div>
 <div class="blackout"></div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbxRYrt3BHfbm79UDudSK-k4eayEiUK8&libraries=places&callback=initialize"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbxRYrt3BHfbm79UDudSK-k4eayEiUK8&libraries=places,marker&&v=beta&callback=initialize"
         async defer></script>
 </body>
 </html>
