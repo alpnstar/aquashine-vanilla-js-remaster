@@ -62,6 +62,7 @@ body, html {
     border: 0;
     outline: none;
     padding-left: 10px;
+    padding-right: 53px;
 }
 
 .google-maps__search input:focus {
@@ -69,7 +70,9 @@ body, html {
 }
 
 .google-maps__button {
-    position: relative;
+    position: absolute;
+    left: 100%;
+    transform: translatex(-100%);
     display: flex;
     justify-content: center;
     align-items: center;
