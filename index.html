@@ -8,20 +8,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script>
-        var map;
-        var marker;
-        var geocoder;
-        var autocomplete;
-        var infowindow;
-        var markers = [];
+        let map;
+        let marker;
+        let geocoder;
+        let autocomplete;
+        let infowindow;
+        let markers = [];
 
         function initialize() {
-            var dubai = new google.maps.LatLng(25.276987, 55.296249);
-            var mapOptions = {
+            const addressInput = document.getElementById('addressInput');
+            const blackout = document.querySelector('.blackout');
+            addressInput.addEventListener('focus', () => blackout.classList.add('blackout--enabled'))
+            addressInput.addEventListener('blur', () => blackout.classList.remove('blackout--enabled'))
+            let dubai = new google.maps.LatLng(25.276987, 55.296249);
+            let mapOptions = {
                 center: dubai,
                 zoom: 13,
                 disableDefaultUI: true,
             };
+
             infowindow = new google.maps.InfoWindow();
             geocoder = new google.maps.Geocoder();
             map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -32,7 +37,7 @@
             });
             google.maps.event.addListener(map, 'center_changed', function () {
                 window.setTimeout(function () {
-                    var center = map.getCenter();
+                    let center = map.getCenter();
                     marker.setPosition(center);
                 }, 0);
             });
@@ -41,7 +46,7 @@
             });
             geocodePosition(dubai);
             autocomplete = new google.maps.places.Autocomplete(
-                document.getElementById('addressInput'),
+                addressInput,
                 {
                     types: [], // Позволяет любой тип мест
                     componentRestrictions: {country: 'AE'}
@@ -51,8 +56,9 @@
             console.log(autocomplete);
 
             autocomplete.addListener('place_changed', function () {
+                blackout.classList.remove('blackout--enabled')
                 infowindow.close();
-                var place = autocomplete.getPlace();
+                let place = autocomplete.getPlace();
                 if (!place.geometry) {
                     window.alert("Место не найдено: '" + place.name + "'");
                     return;
@@ -72,7 +78,7 @@
         // Try HTML5 geolocation
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
-                var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
                 // marker = new google.maps.Marker({
                 //     map: map,
@@ -83,7 +89,7 @@
                 // Добавляем слушатель событий для перемещения маркера с картой.
                 // google.maps.event.addListener(map, 'center_changed', function () {
                 //     window.setTimeout(function () {
-                //         var center = map.getCenter();
+                //         let center = map.getCenter();
                 //         marker.setPosition(center);
                 //     }, 0);
                 // });
@@ -112,9 +118,9 @@
                 latLng: pos
             }, function (responses) {
                 if (responses && responses.length > 0) {
-                    document.getElementById('addressInput').value = responses[0].formatted_address;
+                    addressInput.value = responses[0].formatted_address;
                 } else {
-                    document.getElementById('addressInput').value = 'Cannot determine address at this location.';
+                    addressInput.value = 'Cannot determine address at this location.';
                 }
             });
         }
@@ -122,12 +128,12 @@
 
         function handleNoGeolocation(errorFlag) {
             if (errorFlag) {
-                var content = 'Error: The Geolocation service failed.';
+                let content = 'Error: The Geolocation service failed.';
             } else {
-                var content = 'Error: Your browser doesn\'t support geolocation.';
+                let content = 'Error: Your browser doesn\'t support geolocation.';
             }
 
-            var options = {
+            let options = {
                 map: map,
                 position: new google.maps.LatLng(60, 105),
                 content: content
@@ -136,7 +142,7 @@
             map.setCenter(options.position);
         }
 
-        google.maps.event.addDomListener(window, 'load', initialize);
+        // google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 </head>
 <body>
@@ -161,6 +167,7 @@
     </div>
 </div>
 <div id="map-canvas"></div>
+<div class="blackout"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbxRYrt3BHfbm79UDudSK-k4eayEiUK8&libraries=places&callback=initialize"
         async defer></script>
 </body>
