@@ -15,7 +15,6 @@ body, html {
 }
 
 .pac-container {
-    display: block !important;
     border-radius: 0 0 10px 10px;
 }
 .pac-container::after{
