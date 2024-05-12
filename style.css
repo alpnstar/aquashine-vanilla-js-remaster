@@ -9,9 +9,11 @@ body, html {
     width: 100%;
     height: 100%;
 }
+
 body {
 
 }
+
 .google-maps {
     height: 100%;
 }
@@ -19,19 +21,23 @@ body {
 .pac-container {
     border-radius: 0 0 10px 10px;
 }
-.pac-container::after{
+
+.pac-container::after {
     background-image: none !important;
     display: none !important;
 }
+
 .pac-item {
     padding: 10px;
     overflow: hidden;
     font-size: 16px;
     margin: 0 17px !important;
 }
+
 .pac-item-query {
     font-size: 13px;
 }
+
 .google-maps__search {
     max-width: 1010px;
     width: 100%;
@@ -95,16 +101,26 @@ body {
     height: 100%;
     width: 100%;
 }
-.blackout{
+
+.marker {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -50%);
+    z-index: 10000 !important;
+}
+
+.blackout {
     display: none;
     position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
-    top:0;
+    top: 0;
     z-index: 0;
     background-color: rgba(0, 0, 0, 0.5);
 }
-.blackout--enabled{
+
+.blackout--enabled {
     display: block;
 }
