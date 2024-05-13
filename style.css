@@ -44,7 +44,7 @@ body {
     height: 70px;
     margin: 0 auto;
     padding: 10px 10px;
-    z-index: 1;
+    z-index: 3;
 
 }
 
@@ -54,7 +54,7 @@ body {
 
 .google-maps__search-inner {
     position: relative;
-    z-index: 1;
+    z-index: 3;
     display: flex;
     height: 100%;
     border-radius: 5px;
@@ -123,7 +123,7 @@ body {
     height: 100%;
     left: 0;
     top: 0;
-    z-index: 0;
+    z-index: 2;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -134,7 +134,7 @@ body {
 .marker-wrapper {
     pointer-events: none;
 
-    z-index: 1000000000;
+    z-index: 1;
     width: 64px;
     height: 64px;
     position: absolute;

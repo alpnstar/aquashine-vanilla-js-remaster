@@ -7,7 +7,6 @@ let markers = [];
 
 function initialize() {
     const isMobile = isMobileCheck();
-    alert(isMobile);
     let dubai = new google.maps.LatLng(25.276987, 55.296249);
 
     infowindow = new google.maps.InfoWindow();
