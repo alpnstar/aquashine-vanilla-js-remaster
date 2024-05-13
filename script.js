@@ -6,8 +6,9 @@ let infowindow;
 let markers = [];
 
 function initialize() {
+    const isMobile = isMobileCheck();
+    alert(isMobile);
     let dubai = new google.maps.LatLng(25.276987, 55.296249);
-
 
     infowindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
@@ -17,6 +18,7 @@ function initialize() {
         zoom: 13,
         mapId: 'DEMO_MAP_ID',
         disableDefaultUI: true,
+        gestureHandling: isMobile ? 'auto' : 'cooperative',
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
@@ -27,7 +29,24 @@ function initialize() {
     const addressInput = document.getElementById('addressInput');
     addressInput.addEventListener('focus', () => blackout.classList.add('blackout--enabled'))
     addressInput.addEventListener('blur', () => blackout.classList.remove('blackout--enabled'))
+    let delayPassed = true;
+    if (!isMobile) {
+        google.maps.event.addDomListener(document.getElementById('map-canvas'), 'wheel', function (e) {
+            if (delayPassed) {
+                var currentZoom = map.getZoom();
+                var delta = e.deltaY;
+                if (delta > 0) {
+                    map.setZoom(currentZoom - 1);
+                } else {
+                    map.setZoom(currentZoom + 1);
+                }
+                e.preventDefault();
+                delayPassed = false;
+                setTimeout(() => delayPassed = true, 100)
 
+            }
+        })
+    }
 
     const tempEmptyImg = document.createElement("img");
     marker = new google.maps.marker.AdvancedMarkerView({
@@ -37,18 +56,15 @@ function initialize() {
         content: tempEmptyImg,
     });
 
-
     google.maps.event.addListener(map, 'center_changed', function () {
 
         window.setTimeout(function () {
-            let center = map.getCenter();
-            marker.position = center;
+            marker.position = map.getCenter();
         }, 0);
     });
     google.maps.event.addListener(map, 'zoom_changed', function () {
         window.setTimeout(function () {
-            let center = map.getCenter();
-            marker.position = center;
+            marker.position = map.getCenter();
             geocodePosition(marker.position);
         }, 0);
     });
@@ -136,6 +152,17 @@ function initialize() {
 
 // google.maps.event.addDomListener(window, 'load', initialize);
 
+}
+
+function isMobileCheck() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /mobile|iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(userAgent);
+
+    if (isMobile) {
+        return "true";
+    } else {
+        return false;
+    }
 }
 
 

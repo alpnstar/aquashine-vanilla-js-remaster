@@ -104,7 +104,9 @@ body {
     top: 0;
     height: 100%;
     width: 100%;
+
 }
+
 
 .marker {
     position: absolute;
@@ -130,6 +132,9 @@ body {
 }
 
 .marker-wrapper {
+    pointer-events: none;
+
+    z-index: 1000000000;
     width: 64px;
     height: 64px;
     position: absolute;
@@ -139,9 +144,7 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
 
-    * {
-        /*border: 1px red solid;*/
-    }
+
 }
 
 .placemark--daH26 {
@@ -197,6 +200,9 @@ body {
     display: block;
     height: 100%;
     width: 100%;
+}
+.gm-style-moc {
+    display: none !important;
 }
 
 @media screen and (max-width: 771px) {
