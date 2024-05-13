@@ -45,6 +45,13 @@ function initialize() {
             marker.position = center;
         }, 0);
     });
+    google.maps.event.addListener(map, 'zoom_changed', function () {
+        window.setTimeout(function () {
+            let center = map.getCenter();
+            marker.position = center;
+            geocodePosition(marker.position);
+        }, 0);
+    });
     google.maps.event.addListener(map, 'dragend', function () {
         geocodePosition(marker.position);
     });
@@ -109,7 +116,6 @@ function initialize() {
 
 
     function geocodePosition(pos) {
-        console.log('worked')
         geocoder.geocode({
             latLng: pos
         }, function (responses) {

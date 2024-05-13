@@ -129,59 +129,6 @@ body {
     display: block;
 }
 
-.placemark--daH26 {
-    align-items: center;
-    background-color: #656afc;
-    border-radius: 50%;
-    bottom: 55px;
-    display: flex;
-    flex-direction: column;
-    height: 64px;
-    justify-content: center;
-    left: 0;
-    position: absolute;
-    width: 64px;
-
-}
-
-.placemark--daH26:before {
-    background-image: radial-gradient(ellipse 50% 100%, rgba(0, 0, 0, .1), transparent);
-    border-radius: 50%;
-    bottom: -30px;
-    content: "";
-    height: 16px;
-    position: absolute;
-    transition: transform .3s ease-in;
-    width: 32px;
-
-
-}
-.placemark--daH26:after {
-    border-radius: 2px;
-    position: relative;
-    bottom: -28px;
-    content: "";
-    height: 34px;
-    opacity: 1;
-    width: 4px;
-    background-color: #656afc;
-}
-
-.label-container--aBo8C {
-
-}
-
-.label-container--aBo8C:after {
-    position: relative;
-    top: 100%;
-    background-color: white;
-    border-radius: 50%;
-    content: "";
-    display: block;
-    height: 18px;
-    width: 18px;
-}
-
 .marker-wrapper {
     width: 64px;
     height: 64px;
@@ -192,5 +139,69 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
 
+    * {
+        /*border: 1px red solid;*/
+    }
+}
 
+.placemark--daH26 {
+    background-color: #656afc;
+    border-radius: 50%;
+    bottom: 85.9% /*55px*/;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+}
+
+.placemark--daH26:before {
+    background-image: radial-gradient(ellipse 50% 100%, rgba(0, 0, 0, .1), transparent);
+    border-radius: 50%;
+    bottom: -46.88% /*-30px*/;
+    content: "";
+    height: 25% /*16px*/;
+    position: absolute;
+    transition: transform .3s ease-in;
+    width: 50% /*32px*/;
+
+
+}
+
+.placemark--daH26:after {
+    border-radius: 2px;
+    position: relative;
+    bottom: -43.25% /*-28px*/;
+    content: "";
+    height: 53% /*34px*/;
+    opacity: 1;
+    width: 6.25% /*4px*/;
+    background-color: #656afc;
+}
+
+.label-container--aBo8C {
+    width: 30.13%;
+    height: 28.13%;
+}
+
+.label-container--aBo8C:after {
+    position: relative;
+    top: 100%;
+    background-color: white;
+    border-radius: 50%;
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+@media screen and (max-width: 771px) {
+    .marker-wrapper {
+        width: 42.6px ;
+        height: 42.6px ;
+    }
 }
