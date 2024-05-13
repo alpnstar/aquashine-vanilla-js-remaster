@@ -6,21 +6,29 @@ let infowindow;
 let markers = [];
 
 function initialize() {
-    const addressInput = document.getElementById('addressInput');
-    const blackout = document.querySelector('.blackout');
-    addressInput.addEventListener('focus', () => blackout.classList.add('blackout--enabled'))
-    addressInput.addEventListener('blur', () => blackout.classList.remove('blackout--enabled'))
     let dubai = new google.maps.LatLng(25.276987, 55.296249);
+
+
+    infowindow = new google.maps.InfoWindow();
+    geocoder = new google.maps.Geocoder();
+
     let mapOptions = {
         center: dubai,
         zoom: 13,
         mapId: 'DEMO_MAP_ID',
         disableDefaultUI: true,
     };
-
-    infowindow = new google.maps.InfoWindow();
-    geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    // geocodePosition(dubai);
+
+    const blackout = document.querySelector('.blackout');
+
+    const addressInput = document.getElementById('addressInput');
+    addressInput.addEventListener('focus', () => blackout.classList.add('blackout--enabled'))
+    addressInput.addEventListener('blur', () => blackout.classList.remove('blackout--enabled'))
+
+
     const tempEmptyImg = document.createElement("img");
     marker = new google.maps.marker.AdvancedMarkerView({
         map: map,
@@ -40,7 +48,7 @@ function initialize() {
     google.maps.event.addListener(map, 'dragend', function () {
         geocodePosition(marker.position);
     });
-    geocodePosition(dubai);
+
     autocomplete = new google.maps.places.Autocomplete(
         addressInput,
         {
@@ -49,7 +57,6 @@ function initialize() {
         }
     );
     autocomplete.bindTo('bounds', map);
-
     autocomplete.addListener('place_changed', function () {
         blackout.classList.remove('blackout--enabled')
         infowindow.close();
@@ -67,72 +74,63 @@ function initialize() {
         }
 
     });
-}
 
+    // Try HTML5 geolocation
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            // marker.position = pos;
+            // marker = new google.maps.Marker({
+            //     map: map,
+            //     position: pos,
+            //     title: 'Drag me!'
+            // });
 
-// Try HTML5 geolocation
-if (navigator.geolocation) {
-    console.log(1)
-    navigator.geolocation.getCurrentPosition(function (position) {
-        let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        marker.position = pos;
-        // marker = new google.maps.Marker({
-        //     map: map,
-        //     position: pos,
-        //     title: 'Drag me!'
-        // });
+            // Добавляем слушатель событий для перемещения маркера с картой.
+            // google.maps.event.addListener(map, 'center_changed', function () {
+            //     let center = map.getCenter();
+            //     marker.position = center;
+            // });
 
-        // Добавляем слушатель событий для перемещения маркера с картой.
-        google.maps.event.addListener(map, 'center_changed', function () {
-            let center = map.getCenter();
-            marker.position = center;
-        });
+            map.setCenter(pos);
 
-        map.setCenter(pos);
+            // Добавляем слушатель событий после окончания перемещения маркера для получения адреса
+            // google.maps.event.addListener(map, 'dragend', function () {
+            //     geocodePosition(marker.position);
+            // });
 
-        // Добавляем слушатель событий после окончания перемещения маркера для получения адреса
-        google.maps.event.addListener(map, 'dragend', function () {
-            geocodePosition(marker.position);
-        });
+            // Получаем адрес начальной позиции
+            geocodePosition(pos);
 
-        // Получаем адрес начальной позиции
-        geocodePosition(pos);
-
-    }, function () {
-        marker.position = google.maps.LatLng(25.276987, 55.296249);
-    });
-} else {
-    marker.position = google.maps.LatLng(25.276987, 55.296249);
-}
-
-
-function geocodePosition(pos) {
-    geocoder.geocode({
-        latLng: pos
-    }, function (responses) {
-        if (responses && responses.length > 0) {
-            addressInput.value = responses[0].formatted_address;
-        } else {
-            addressInput.value = 'Cannot determine address at this location.';
-        }
-    });
-}
-
-
-function handleNoGeolocation(errorFlag) {
-    if (errorFlag) {
-        let content = 'Error: The Geolocation service failed.';
+        }, handleNoGeolocation);
     } else {
-        let content = 'Error: Your browser doesn\'t support geolocation.';
+        handleNoGeolocation();
     }
 
-    let options = {
-        map: map,
-        position: new google.maps.LatLng(60, 105),
-        content: content
-    };
 
-    map.setCenter(options.position);
+    function geocodePosition(pos) {
+        console.log('worked')
+        geocoder.geocode({
+            latLng: pos
+        }, function (responses) {
+            if (responses && responses.length > 0) {
+                addressInput.value = responses[0].formatted_address;
+            } else {
+                addressInput.value = 'Cannot determine address at this location.';
+            }
+        });
+    }
+
+
+    function handleNoGeolocation() {
+        let dubai = new google.maps.LatLng(25.276987, 55.296249);
+        map.setCenter(dubai);
+        geocodePosition(dubai);
+    }
+
+// google.maps.event.addDomListener(window, 'load', initialize);
+
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+
+
