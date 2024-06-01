@@ -6,7 +6,6 @@ let infowindow;
 let markers = [];
 
 function initialize() {
-    const isMobile = isMobileCheck();
     let dubai = new google.maps.LatLng(25.276987, 55.296249);
 
     infowindow = new google.maps.InfoWindow();
@@ -17,6 +16,7 @@ function initialize() {
         zoom: 13,
         mapId: 'DEMO_MAP_ID',
         disableDefaultUI: true,
+        gestureHandling:'greedy',
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
