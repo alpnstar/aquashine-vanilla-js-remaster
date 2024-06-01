@@ -17,35 +17,15 @@ function initialize() {
         zoom: 13,
         mapId: 'DEMO_MAP_ID',
         disableDefaultUI: true,
-        gestureHandling: isMobile ? 'auto' : 'cooperative',
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-    // geocodePosition(dubai);
 
     const blackout = document.querySelector('.blackout');
 
     const addressInput = document.getElementById('addressInput');
     addressInput.addEventListener('focus', () => blackout.classList.add('blackout--enabled'))
     addressInput.addEventListener('blur', () => blackout.classList.remove('blackout--enabled'))
-    let delayPassed = true;
-    if (!isMobile) {
-        google.maps.event.addDomListener(document.getElementById('map-canvas'), 'wheel', function (e) {
-            if (delayPassed) {
-                var currentZoom = map.getZoom();
-                var delta = e.deltaY;
-                if (delta > 0) {
-                    map.setZoom(currentZoom - 1);
-                } else {
-                    map.setZoom(currentZoom + 1);
-                }
-                e.preventDefault();
-                delayPassed = false;
-                setTimeout(() => delayPassed = true, 100)
-
-            }
-        })
-    }
 
     const tempEmptyImg = document.createElement("img");
     marker = new google.maps.marker.AdvancedMarkerView({

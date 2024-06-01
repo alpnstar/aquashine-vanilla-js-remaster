@@ -37,7 +37,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/alpnstar/Рабочий стол/drag-map.html",
+    "last_opened_file_path": "/home/alpnstar/Рабочий стол/google-maps-vanilla",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -56,6 +56,7 @@
       <updated>1715503717963</updated>
       <workItem from="1715503718969" duration="9712000" />
       <workItem from="1715515161393" duration="42500000" />
+      <workItem from="1717257967907" duration="1468000" />
     </task>
     <servers />
   </component>
